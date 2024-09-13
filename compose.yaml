@@ -1,0 +1,14 @@
+name: piktid-assignment
+
+services:
+  swap-frontend:
+    image: swap-frontend
+    container_name: braid-frontend
+    build: .
+    restart: always
+    mem_limit: ${MEMORY_FRONTEND:-512m}
+    ports:
+      - ${WEBAPP_HTTP_PORT:-80}:80
+      - ${WEBAPP_HTTPS_PORT:-443}:443
+    # environment:
+    #   BASE_API_URL: ""

@@ -25,6 +25,6 @@ export default defineConfig({
   },
   define: {
     "import.meta.env.PACKAGE_VERSION": JSON.stringify(packageJson.version),
-    "import.meta.env.BASE_API_URL": JSON.stringify(""),
+    "import.meta.env.BASE_API_URL": JSON.stringify(process.env.BASE_API_URL || ""),
   },
 })

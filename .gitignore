@@ -135,11 +135,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-!config/*/.env
-private/
-!.env
-data/
-
 # Generated documentation
 /docs/
 
