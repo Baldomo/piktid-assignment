@@ -1,5 +1,6 @@
 import { ApiProvider } from "@/components/ApiProvider"
 import { AuthenticationProvider } from "@/components/AuthenticationProvider"
+import { FaceSwapProvider } from "@/components/FaceSwapProvider"
 import { ThemeProvider } from "@/components/ThemeProviders"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import "@/index.css"
@@ -15,8 +16,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <TooltipProvider delayDuration={100} disableHoverableContent>
       <ApiProvider>
         <AuthenticationProvider>
-          <AppRouter />
-          <Toaster closeButton richColors />
+          <FaceSwapProvider>
+            <AppRouter />
+            <Toaster closeButton richColors />
+          </FaceSwapProvider>
         </AuthenticationProvider>
       </ApiProvider>
     </TooltipProvider>

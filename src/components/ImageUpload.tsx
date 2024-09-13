@@ -13,6 +13,7 @@ interface ImageUploadProps<Resp extends Response> {
   doUpload: (file: File, options?: Partial<RequestFileOptions>) => Promise<Resp>
   extractLink: (resp: Resp) => string
   onUploadComplete?: (url: string) => void
+  onRemove?: (name: string) => void
   onFail?: (code?: number) => void
 }
 
@@ -23,6 +24,7 @@ export function ImageUpload<R extends Response>({
   extractLink,
   onUploadComplete,
   onFail = () => {},
+  onRemove = () => {},
 }: ImageUploadProps<R>) {
   const [loading, setLoading] = useState<boolean>(false)
   const [progress, setProgress] = useState<number>(0)
@@ -67,6 +69,7 @@ export function ImageUpload<R extends Response>({
   }
 
   const removeSelectedImage = () => {
+    onRemove(uploadedImagePath || "")
     setLoading(false)
     setUploadedImagePath(null)
     setSelectedImage(null)
@@ -128,7 +131,7 @@ export function ImageUpload<R extends Response>({
 
           {!loading && !uploadedImagePath && (
             <div className="text-center">
-              <div className="border p-2 rounded-md max-w-min mx-auto">
+              <div className="border p-2 rounded-full max-w-min mx-auto">
                 <Icon size="1.6em" />
               </div>
 
@@ -143,7 +146,7 @@ export function ImageUpload<R extends Response>({
             <div className="text-center space-y-2 flex flex-col h-full">
               <img src={fileDataURL} alt="" className="rounded-lg block w-auto h-full object-cover" />
 
-              <Button onClick={removeSelectedImage} type="button" variant="secondary">
+              <Button onClick={removeSelectedImage} type="button" variant="outline">
                 {uploadedImagePath ? "Remove" : "Close"}
               </Button>
             </div>

@@ -4,8 +4,8 @@ import { createContext } from "react"
 export type FaceSwapContextType = {
   faceUrl: string | undefined
   targetUrl: string | undefined
-  setFaceUrl: (url: string) => void
-  setTargetUrl: (url: string) => void
+  setFaceUrl: (url: string | undefined) => void
+  setTargetUrl: (url: string | undefined) => void
   links: SwapGenerateLink[]
   doSwap: () => void
   swapProcessing: boolean
