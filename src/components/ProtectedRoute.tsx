@@ -22,10 +22,12 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, [currentUser, location.pathname, navigate])
 
   if (currentUser === undefined) {
-    return <Loading />
+    return (
+      <div className="h-screen flex justify-center">
+        <Loading />
+      </div>
+    )
   }
-
-  console.log(currentUser)
 
   return children ? <>{children}</> : <Outlet />
 }

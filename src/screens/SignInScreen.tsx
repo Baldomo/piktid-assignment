@@ -9,7 +9,6 @@ import { ROUTE } from "@/routes"
 import { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useSearchParams } from "react-router-dom"
-// import { useAuthentication } from "../hooks/useAuthentication"
 
 type FormFields = {
   username: string
@@ -23,6 +22,7 @@ export const MIN_USERNAME_LENGTH = 4
 export function SignInScreen() {
   const navigate = useNavigate()
   const { signIn, signOut } = useAuth()
+
   const form = useForm<FormFields>({
     defaultValues: {
       username: "",
@@ -63,7 +63,7 @@ export function SignInScreen() {
             </CardTitle>
             <CardDescription className="text-center">Log in with your PiktID account to continue</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="grid gap-4">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="grid gap-4">
@@ -107,6 +107,26 @@ export function SignInScreen() {
                 </div>
               </form>
             </Form>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              </div>
+            </div>
+            {/* <Button variant="outline" type="button" disabled={form.formState.isSubmitting}>
+              <IconBrandGoogleFilled className="mr-2 h-4 w-4" />
+              Google
+            </Button> */}
+            {/* <GoogleLogin
+              onSuccess={credentialResponse}
+              onError={() => {
+                console.log("Login Failed")
+              }}
+              ux_mode="popup"
+              useOneTap={true}
+            /> */}
           </CardContent>
         </Card>
       </div>

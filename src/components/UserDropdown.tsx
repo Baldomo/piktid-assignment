@@ -13,7 +13,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { IconCreditCard, IconLogout, IconUser } from "@tabler/icons-react"
 
 export function UserDropdown() {
-  const { currentUser } = useAuth()
+  const { currentUser, signOut } = useAuth()
 
   return (
     <DropdownMenu>
@@ -44,7 +44,7 @@ export function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>
           <IconLogout className="mr-2 h-4 w-4" />
           Log out
         </DropdownMenuItem>

@@ -58,6 +58,7 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
     console.info("Signing out user")
 
     api.logout()
+    setSession(undefined)
   }, [api])
 
   if (loading) {

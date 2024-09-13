@@ -158,7 +158,7 @@ export default class PiktidApiClient {
     if (!response.ok) {
       this.removeUserData()
       this.onErrorUnauthorized()
-      await this.delay(2000)
+      // await this.delay(2000)
       throw new Error("asdasd")
     }
 
