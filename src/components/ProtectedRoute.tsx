@@ -1,5 +1,5 @@
 import { Loading } from "@/components/Loading"
-import { useAuth } from "@/hooks/useAuth"
+import { useAuth } from "@/hooks/useAuthentication"
 import { ROUTE } from "@/routes"
 import { ReactElement, useEffect } from "react"
 import { Outlet, useLocation, useNavigate } from "react-router-dom"

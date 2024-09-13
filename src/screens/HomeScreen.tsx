@@ -1,18 +1,28 @@
-import { ContentLayout } from "@/components/layouts/ContentLayout"
-import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table"
-import { UserDropdown } from "@/components/UserDropdown"
+import { ImageUpload } from "@/components/ImageUpload"
+import { useApi } from "@/hooks/useApi"
+import { UploadFaceResponse, UploadTargetResponse } from "@/lib/api"
 
 export function HomeScreen() {
+  const api = useApi()
+
   return (
-    <>
-      <ContentLayout rightActions={<UserDropdown />}>
-        <Table className="table-fixed">
-          <TableHeader className="sticky inset-0 bg-secondary">
-            <TableRow className="shadow-sticky-header-b [&_th]:pt-4 [&_th]:align-top [&_th]:text-primary [&_input]:text-muted-foreground"></TableRow>
-          </TableHeader>
-          <TableBody></TableBody>
-        </Table>
-      </ContentLayout>
-    </>
+    <div className="h-full grid gap-6 grid-rows-1 grid-cols-2 justify-items-center items-center">
+      <div className="grid w-full grid-rows-3 grid-cols-3 align-self-center">
+        <div className="flex h-[300px] w-full shrink-0 items-center justify-center rounded-md">
+          <ImageUpload<UploadFaceResponse>
+            doUpload={(file, options) => api.swapUploadFace(file, options)}
+            extractLink={resp => resp.face_name}
+          />
+        </div>
+        <div className="flex items-center justify-center">+</div>
+        <div className="flex h-[300px] w-full shrink-0 items-center justify-center rounded-md">
+          <ImageUpload<UploadTargetResponse>
+            doUpload={(file, options) => api.swapUploadTarget(file, options)}
+            extractLink={resp => resp.target_name}
+          />
+        </div>
+      </div>
+      <p className="align-self-center jusitify-self-center">Right panel</p>
+    </div>
   )
 }

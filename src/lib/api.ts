@@ -14,8 +14,7 @@ export interface RequestOptions {
 }
 
 export interface RequestFileOptions extends RequestOptions {
-  file: File
-  progress_function?: (progressEvent: AxiosProgressEvent) => void
+  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void
 }
 
 export interface Response {
@@ -27,6 +26,14 @@ export interface Response {
 export interface RefreshResponse {
   access_token: string
   refresh_token: string
+}
+
+export interface UploadFaceResponse extends Response {
+  face_name: string
+}
+
+export interface UploadTargetResponse extends Response {
+  target_name: string
 }
 
 export type OnErrorFunction = () => void
@@ -130,12 +137,8 @@ export default class PiktidApiClient {
     return this.request({ method: "DELETE", url, ...options })
   }
 
-  async getUser(accessToken: string) {
-    const response = await this.get("/me", undefined, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    })
+  async getUserInfo() {
+    const response = await this.get("/me")
 
     if (!response.ok) {
       this.removeUserData()
@@ -163,7 +166,7 @@ export default class PiktidApiClient {
     }
 
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, body.access_token)
-    return await this.getUser(body.access_token)
+    return await this.getUserInfo()
   }
 
   async logout(): Promise<boolean> {
@@ -175,6 +178,7 @@ export default class PiktidApiClient {
     const refreshResponse = await this.put("/tokens", {
       access_token: localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY),
     })
+
     if (refreshResponse.ok) {
       const body = refreshResponse.body as RefreshResponse
       localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, body.access_token)
@@ -183,5 +187,40 @@ export default class PiktidApiClient {
       this.removeUserData()
       return false
     }
+  }
+
+  async uploadFile<Resp extends Response>(url: string, formData: FormData, options?: Partial<RequestFileOptions>) {
+    // TODO: serialize options into formData?
+    // if (options) {
+    //   formData.append("options", options)
+    // }
+
+    try {
+      const response = await axios.post(this.base_url + url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: "Bearer " + localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY),
+        },
+      })
+
+      return response.data as Resp
+    } catch (error) {
+      console.error("Error uploading file:", error)
+      throw error
+    }
+  }
+
+  async swapUploadFace(file: File, options?: Partial<RequestFileOptions>) {
+    const formData = new FormData()
+    formData.append("face", file)
+
+    return await this.uploadFile<UploadFaceResponse>("/swap/face", formData, options)
+  }
+
+  async swapUploadTarget(file: File, options?: Partial<RequestFileOptions>) {
+    const formData = new FormData()
+    formData.append("target", file)
+
+    return await this.uploadFile<UploadTargetResponse>("/swap/target", formData, options)
   }
 }

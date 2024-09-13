@@ -19,7 +19,7 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
     if (storedToken != null) {
       // verify if the session is still valid
       api
-        .getUser(storedToken)
+        .getUserInfo()
         .then(response => {
           if (response) {
             console.info("User has a valid session token")

@@ -2,8 +2,9 @@ import { ProtectedRoute } from "@/components/ProtectedRoute"
 import { ErrorScreen } from "@/screens/ErrorScreen"
 import { HomeScreen } from "@/screens/HomeScreen"
 import { Page404 } from "@/screens/Page404"
+import { Root } from "@/screens/Root"
 import { SignInScreen } from "@/screens/SignInScreen"
-import { Outlet, RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouteObject, RouterProvider, createBrowserRouter } from "react-router-dom"
 
 export const ROUTE = {
   root: "/",
@@ -12,25 +13,25 @@ export const ROUTE = {
 
 export const routes: RouteObject[] = [
   {
+    path: ROUTE.signIn,
+    errorElement: <ErrorScreen />,
+    element: <SignInScreen />,
+  },
+  {
     path: ROUTE.root,
-    element: <Outlet />,
+    element: (
+      <ProtectedRoute>
+        <Root />
+      </ProtectedRoute>
+    ),
     errorElement: <ErrorScreen />,
     children: [
       {
         index: true,
-        element: (
-          <ProtectedRoute>
-            <HomeScreen />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: ROUTE.signIn,
-        element: <SignInScreen />,
+        element: <HomeScreen />,
       },
     ],
   },
-
   { path: "*", element: <Page404 /> },
 ]
 
