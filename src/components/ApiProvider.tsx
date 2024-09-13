@@ -1,6 +1,6 @@
+import { ApiContext } from "@/contexts/ApiContext"
 import PiktidApiClient from "@/lib/api"
 import { ReactNode, useMemo } from "react"
-import { ApiContext } from "../contexts/ApiContext"
 
 type ApiProviderProps = {
   children: ReactNode

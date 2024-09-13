@@ -92,6 +92,9 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.3.1
+      react-archer:
+        specifier: ^4.4.0
+        version: 4.4.0(@types/react@18.3.5)(prop-types@15.8.1)(react@18.3.1)
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
@@ -2386,6 +2389,13 @@ packages:
   randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
 
+  react-archer@4.4.0:
+    resolution: {integrity: sha512-m9mEpGHphwWZW7mzk7UVGJVwom353lAbDQ/DJIYH59LnEpEVyaE3KxZKBChB5WYipyOl3HhRlVQk+TknJbGfSQ==}
+    peerDependencies:
+      '@types/react': ^16.8.8 || ^17 || ^18
+      prop-types: ^15.6.2
+      react: ^16.9.0 || ^17 || ^18
+
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
@@ -2396,6 +2406,9 @@ packages:
     engines: {node: '>= 10.13'}
     peerDependencies:
       react: '>= 16.8 || 18.0.0'
+
+  react-fast-compare@2.0.4:
+    resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
 
   react-hook-form@7.53.0:
     resolution: {integrity: sha512-M1n3HhqCww6S2hxLxciEXy2oISPnAzxY7gvwVPrtlczTM/1dDadXgUxDpHMrMTblDOcm/AXtXxHwZ3jpg1mqKQ==}
@@ -2499,6 +2512,9 @@ packages:
 
   requizzle@0.2.4:
     resolution: {integrity: sha512-JRrFk1D4OQ4SqovXOgdav+K8EAhSB/LJZqCz8tbX0KObcdeM15Ss59ozWMBWmmINMagCwmqn4ZNryUGpBsl6Jw==}
+
+  resize-observer-polyfill@1.5.0:
+    resolution: {integrity: sha512-M2AelyJDVR/oLnToJLtuDJRBBWUGUvvGigj1411hXhAdyFWqMaqHp7TixW3FpiLuVaikIcR1QL+zqoJoZlOgpg==}
 
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
@@ -5147,6 +5163,14 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
+  react-archer@4.4.0(@types/react@18.3.5)(prop-types@15.8.1)(react@18.3.1):
+    dependencies:
+      '@types/react': 18.3.5
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-fast-compare: 2.0.4
+      resize-observer-polyfill: 1.5.0
+
   react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -5159,6 +5183,8 @@ snapshots:
       file-selector: 0.6.0
       prop-types: 15.8.1
       react: 18.3.1
+
+  react-fast-compare@2.0.4: {}
 
   react-hook-form@7.53.0(react@18.3.1):
     dependencies:
@@ -5254,6 +5280,8 @@ snapshots:
   requizzle@0.2.4:
     dependencies:
       lodash: 4.17.21
+
+  resize-observer-polyfill@1.5.0: {}
 
   resolve-from@4.0.0: {}
 

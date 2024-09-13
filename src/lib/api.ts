@@ -36,6 +36,16 @@ export interface UploadTargetResponse extends Response {
   target_name: string
 }
 
+export type SwapGenerateLink = {
+  l: string
+  n: string
+  t: string
+}
+
+export interface SwapGenerateResponse extends Response {
+  links: SwapGenerateLink[]
+}
+
 export type OnErrorFunction = () => void
 
 export default class PiktidApiClient {
@@ -201,6 +211,7 @@ export default class PiktidApiClient {
           "Content-Type": "multipart/form-data",
           Authorization: "Bearer " + localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY),
         },
+        onUploadProgress: options?.onUploadProgress,
       })
 
       return response.data as Resp
@@ -222,5 +233,12 @@ export default class PiktidApiClient {
     formData.append("target", file)
 
     return await this.uploadFile<UploadTargetResponse>("/swap/target", formData, options)
+  }
+
+  async swapGenerate(faceUrl: string, targetUrl: string) {
+    return (await this.post("/swap/generate", {
+      face_name: faceUrl,
+      target_name: targetUrl,
+    })) as SwapGenerateResponse
   }
 }
