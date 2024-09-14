@@ -10,5 +10,7 @@ services:
     ports:
       - ${WEBAPP_HTTP_PORT:-80}:80
       - ${WEBAPP_HTTPS_PORT:-443}:443
-    # environment:
-    #   BASE_API_URL: ""
+    environment:
+      BASE_API_URL: ${PIKTID_BASE_API_URL}
+      GOOGLE_CLIENT_ID: ${PIKTID_GOOGLE_CLIENT_ID}
+      GOOGLE_LOGIN_SECRET_KEY: ${PIKTID_GOOGLE_LOGIN_SECRET_KEY}

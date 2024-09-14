@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { useAuth } from "@/hooks/useAuthentication"
 import { validateMinLength } from "@/lib/form"
 import { ROUTE } from "@/routes"
+import { GoogleLogin } from "@react-oauth/google"
 import { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -21,7 +22,7 @@ export const MIN_USERNAME_LENGTH = 4
 
 export function SignInScreen() {
   const navigate = useNavigate()
-  const { signIn, signOut } = useAuth()
+  const { signIn, signOut, googleSignIn, googleAuthEnabled } = useAuth()
 
   const form = useForm<FormFields>({
     defaultValues: {
@@ -48,7 +49,7 @@ export function SignInScreen() {
           pathname: ROUTE.root,
         })
       }
-    } catch (e) {
+    } catch {
       setError(SIGN_IN_ERROR)
     }
   }
@@ -107,26 +108,34 @@ export function SignInScreen() {
                 </div>
               </form>
             </Form>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-            {/* <Button variant="outline" type="button" disabled={form.formState.isSubmitting}>
-              <IconBrandGoogleFilled className="mr-2 h-4 w-4" />
-              Google
-            </Button> */}
-            {/* <GoogleLogin
-              onSuccess={credentialResponse}
-              onError={() => {
-                console.log("Login Failed")
-              }}
-              ux_mode="popup"
-              useOneTap={true}
-            /> */}
+            {googleAuthEnabled && (
+              <>
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                  </div>
+                </div>
+                {/* <Button variant="outline" type="button" disabled={form.formState.isSubmitting}>
+                  <IconBrandGoogleFilled className="mr-2 h-4 w-4" />
+                  Google
+                </Button> */}
+                <GoogleLogin
+                  onSuccess={resp => {
+                    if (resp.credential) {
+                      googleSignIn(resp.credential)
+                    }
+                  }}
+                  onError={() => {
+                    console.log("Login Failed")
+                  }}
+                  ux_mode="popup"
+                  useOneTap={true}
+                />
+              </>
+            )}
           </CardContent>
         </Card>
       </div>

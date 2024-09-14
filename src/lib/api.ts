@@ -23,17 +23,25 @@ export interface Response {
   body?: object
 }
 
+export interface GoogleLoginResponse {
+  access_token: string
+}
+
 export interface RefreshResponse {
   access_token: string
   refresh_token: string
 }
 
 export interface UploadFaceResponse extends Response {
-  face_name: string
+  body: {
+    face_name: string
+  }
 }
 
 export interface UploadTargetResponse extends Response {
-  target_name: string
+  body: {
+    target_name: string
+  }
 }
 
 export type SwapGenerateLink = {
@@ -87,7 +95,6 @@ export default class PiktidApiClient {
         data: options.body ? JSON.stringify(options.body) : null,
       })
     } catch (error: unknown) {
-      console.error(error)
       if (isAxiosError(error)) {
         response = {
           ok: false,
@@ -171,10 +178,29 @@ export default class PiktidApiClient {
     if (!response.ok) {
       this.removeUserData()
       this.onErrorUnauthorized()
-      // await this.delay(2000)
-      throw new Error("asdasd")
+      throw new Error("Login request failed")
     }
 
+    localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, body.access_token)
+    return await this.getUserInfo()
+  }
+
+  async googleLogin(name: string, surname: string, email: string, clientId: string, secretKey: string) {
+    const response = await this.post("/googleLogin", {
+      name,
+      surname,
+      email,
+      clientId,
+      secretKey,
+    })
+
+    if (!response.ok) {
+      this.removeUserData()
+      this.onErrorUnauthorized()
+      throw new Error("Login request failed")
+    }
+
+    const body = response.body as GoogleLoginResponse
     localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, body.access_token)
     return await this.getUserInfo()
   }

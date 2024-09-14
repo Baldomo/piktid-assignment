@@ -1,12 +1,22 @@
+import { AuthenticationContext } from "@/contexts/AuthenticationContext"
 import { useApi } from "@/hooks/useApi"
 import { ACCESS_TOKEN_STORAGE_KEY } from "@/lib/api"
 import { User } from "@/lib/user"
+import { googleLogout, GoogleOAuthProvider } from "@react-oauth/google"
 import { ReactNode, useCallback, useEffect, useState } from "react"
-import { AuthenticationContext } from "../contexts/AuthenticationContext"
+import { decodeToken, isExpired } from "react-jwt"
 
 type Session = {
   user: User
 }
+
+type GoogleToken = {
+  given_name: string
+  family_name: string
+  email: string
+}
+
+const { GOOGLE_CLIENT_ID, GOOGLE_LOGIN_SECRET_KEY } = import.meta.env
 
 export function AuthenticationProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true)
@@ -38,6 +48,25 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
     }
   }, [api])
 
+  const googleSignIn = useCallback(
+    (jwt: string) => {
+      if (!GOOGLE_CLIENT_ID || !GOOGLE_LOGIN_SECRET_KEY) {
+        return
+      }
+
+      if (!isExpired(jwt)) {
+        const decoded = decodeToken<GoogleToken>(jwt)
+        if (!decoded) {
+          return
+        }
+
+        const { given_name, family_name, email } = decoded
+        api.googleLogin(given_name, family_name, email, GOOGLE_CLIENT_ID, GOOGLE_LOGIN_SECRET_KEY)
+      }
+    },
+    [api]
+  )
+
   const signIn = useCallback(
     async (username: string, password: string) => {
       const user = await api.login(username, password)
@@ -56,8 +85,10 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
 
   const signOut = useCallback(() => {
     console.info("Signing out user")
-
-    api.logout()
+    googleLogout()
+    try {
+      api.logout()
+    } catch {}
     setSession(undefined)
   }, [api])
 
@@ -69,11 +100,17 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
     <AuthenticationContext.Provider
       value={{
         currentUser: session?.user,
+        googleSignIn,
+        googleAuthEnabled: GOOGLE_CLIENT_ID && GOOGLE_LOGIN_SECRET_KEY,
         signIn,
         signOut,
       }}
     >
-      {children}
+      {GOOGLE_CLIENT_ID && GOOGLE_LOGIN_SECRET_KEY ? (
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>{children}</GoogleOAuthProvider>
+      ) : (
+        children
+      )}
     </AuthenticationContext.Provider>
   )
 }

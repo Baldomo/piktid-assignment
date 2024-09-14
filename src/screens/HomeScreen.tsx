@@ -29,7 +29,7 @@ function PlusCircle() {
 
 export function HomeScreen() {
   const api = useApi()
-  const { swapProcessing, faceUrl, targetUrl, setFaceUrl, setTargetUrl } = useFaceSwap()
+  const { swapProcessing, faceUrl, targetUrl, setFaceUrl, setTargetUrl, links } = useFaceSwap()
 
   const beforeUnload = useCallback((e: BeforeUnloadEvent) => {
     e.preventDefault()
@@ -139,7 +139,7 @@ export function HomeScreen() {
                       </p>
                       <p className="text-xs text-gray-400 dark:text-gray-400">Please wait for the generation to end</p>
                     </>
-                  ) : (
+                  ) : links.length === 0 ? (
                     <>
                       <div className="border p-2 rounded-full max-w-min mx-auto">
                         <IconCloudDownload size="1.6em" />
@@ -152,6 +152,8 @@ export function HomeScreen() {
                         After it's done processing on our servers
                       </p>
                     </>
+                  ) : (
+                    <></>
                   )}
                 </div>
               </div>
@@ -159,7 +161,7 @@ export function HomeScreen() {
           </ArcherElement>
         </div>
 
-        <div className="col-span-2 align-self-center jusitify-self-center">
+        <div className="col-span-2 align-self-center justify-self-center">
           <ParameterCard />
         </div>
       </div>

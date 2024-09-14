@@ -26,5 +26,7 @@ export default defineConfig({
   define: {
     "import.meta.env.PACKAGE_VERSION": JSON.stringify(packageJson.version),
     "import.meta.env.BASE_API_URL": JSON.stringify(process.env.BASE_API_URL || ""),
+    "import.meta.env.GOOGLE_CLIENT_ID": JSON.stringify(process.env.GOOGLE_CLIENT_ID || null),
+    "import.meta.env.GOOGLE_LOGIN_SECRET_KEY": JSON.stringify(process.env.GOOGLE_LOGIN_SECRET_KEY || null),
   },
 })
