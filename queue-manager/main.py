@@ -11,8 +11,10 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-UPLOAD_FOLDER: Path | None = None
-BASE_API_URL: str | None = None
+UPLOAD_FOLDER: Path | None = Path(
+    environ["UPLOAD_FOLDER"] if "UPLOAD_FOLDER" in environ is not None else "files"
+)
+BASE_API_URL: str | None = environ.get("BASE_API_URL")
 
 # In-memory job store
 jobs = {}
@@ -173,7 +175,7 @@ def get_job_status(job_id):
     return jsonify(response), 200
 
 
-if __name__ == "__main__":
+def setup():
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
 
@@ -182,13 +184,13 @@ if __name__ == "__main__":
     ch.setFormatter(CustomFormatter())
     root_logger.addHandler(ch)
 
-    UPLOAD_FOLDER = environ.get("UPLOAD_FOLDER") or Path("files")
     UPLOAD_FOLDER.mkdir(exist_ok=True)
 
     if "BASE_API_URL" not in environ:
         logging.critical("Missing variable BASE_API_URL")
         exit(1)
-    else:
-        BASE_API_URL = environ["BASE_API_URL"]
 
+
+setup()
+if __name__ == "__main__":
     app.run(debug=True)
