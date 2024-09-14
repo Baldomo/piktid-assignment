@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useFaceSwap } from "@/hooks/useFaceSwap"
 import { cn } from "@/lib/utils"
 import { IconHelp, IconSettings } from "@tabler/icons-react"
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 
 type ParameterCardProps = React.ComponentProps<typeof Card>
 

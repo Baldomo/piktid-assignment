@@ -1,5 +1,5 @@
+import { User } from "@/lib/user"
 import axios, { AxiosProgressEvent, isAxiosError } from "axios"
-import { User } from "./user"
 
 const BASE_API_URL = import.meta.env.BASE_API_URL
 
@@ -33,15 +33,11 @@ export interface RefreshResponse {
 }
 
 export interface UploadFaceResponse extends Response {
-  body: {
-    face_name: string
-  }
+  face_name: string
 }
 
 export interface UploadTargetResponse extends Response {
-  body: {
-    target_name: string
-  }
+  target_name: string
 }
 
 export type SwapGenerateLink = {

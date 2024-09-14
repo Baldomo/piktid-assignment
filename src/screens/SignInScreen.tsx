@@ -57,7 +57,7 @@ export function SignInScreen() {
   return (
     <>
       <div className="flex h-full w-full items-center">
-        <Card className="max-w-lg w-1/2 md:w-1/3 lg:w-1/4 mt-8 mx-auto">
+        <Card className="max-w-lg sm:w-1/2 md:w-1/3 lg:w-1/4 mt-8 mx-auto">
           <CardHeader className="space-x-1">
             <CardTitle className="text-2xl text-center">
               Welcome to <span style={{ color: "#F58B20" }}>PiktID </span>

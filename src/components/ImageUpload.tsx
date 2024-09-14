@@ -117,7 +117,7 @@ export function ImageUpload<R extends Response>({
       <div {...getRootProps()} className="h-full">
         <label
           htmlFor="dropzone-file"
-          className="relative flex flex-col items-center justify-center p-6 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 w-full visually-hidden-focusable h-full"
+          className="relative flex flex-col items-center justify-center p-2 sm:p-6 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 w-full visually-hidden-focusable h-full"
         >
           {loading && (
             <div className="text-center max-w-md">

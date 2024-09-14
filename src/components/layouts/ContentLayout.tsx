@@ -24,7 +24,13 @@ export function ContentLayout({
   return (
     <>
       {!hideHeader && <ContentLayout.Header {...{ leftActions, rightActions }} />}
-      <Body className={cn(scrollable ? "h-screen overflow-auto border-0 print:block" : "h-full print:block")}>
+      <Body
+        className={cn(
+          scrollable
+            ? "h-screen overflow-auto border-0 print:block"
+            : "h-[calc(100%_-_theme(spacing.drawer-header)_-_1px)] print:block"
+        )}
+      >
         {children}
       </Body>
       <ContentLayout.Footer>{footer}</ContentLayout.Footer>
