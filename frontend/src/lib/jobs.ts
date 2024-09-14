@@ -11,8 +11,14 @@ export type JobCreationResponse = {
 
 export type JobStatus = "pending" | "in_progress" | "done" | "failed"
 
-export type JobStatusResponse = {
-  job_id: string
-  status: JobStatus
-  result?: SwapGenerateResponse // Result will only be present when the job is done
-}
+export type JobStatusResponse =
+  | {
+      job_id: string
+      status: "done"
+      result: SwapGenerateResponse
+    }
+  | {
+      job_id: string
+      status: "pending" | "in_progress" | "failed"
+      result: unknown
+    }

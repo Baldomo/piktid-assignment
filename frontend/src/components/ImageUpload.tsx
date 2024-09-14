@@ -93,7 +93,7 @@ export function ImageUpload<R extends Response>({
           onFail(error.status)
         }
         setLoading(false)
-        console.error("Error uploading image:", error)
+        console.error("Error uploading image")
       }
     },
     [doUpload, extractLink, onFail, onUploadComplete]

@@ -38,12 +38,14 @@ export function HomeScreen() {
   }, [])
 
   useEffect(() => {
-    if (faceUrl !== undefined || targetUrl !== undefined || swapProcessing) {
+    const didUpload = faceUrl !== undefined || targetUrl !== undefined
+    const doneProcessing = !swapProcessing && links.length > 0
+    if (didUpload && !doneProcessing) {
       window.addEventListener("beforeunload", beforeUnload)
     } else {
       window.removeEventListener("beforeunload", beforeUnload)
     }
-  }, [beforeUnload, faceUrl, swapProcessing, targetUrl])
+  }, [beforeUnload, faceUrl, links.length, swapProcessing, targetUrl])
 
   return (
     <ArcherContainer strokeColor="#9ca3af" noCurves>
@@ -152,11 +154,9 @@ export function HomeScreen() {
                     </p>
                   </div>
                 ) : (
-                  <img
-                    src={"https://placehold.co/1600x1400"}
-                    alt=""
-                    className="rounded-lg block w-auto h-full object-cover"
-                  />
+                  <a href={links.at(0)?.l} target="_blank" className="rounded-lg block w-auto h-full object-cover">
+                    <img src={links.at(0)?.l} alt="" className="rounded-lg block w-auto h-full object-cover" />
+                  </a>
                 )}
               </div>
             </div>

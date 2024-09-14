@@ -1,5 +1,6 @@
 import { User } from "@/lib/user"
 import axios, { AxiosProgressEvent, isAxiosError } from "axios"
+import { JobCreationResponse, JobStatusResponse } from "./jobs"
 
 const BASE_API_URL = import.meta.env.BASE_API_URL
 
@@ -104,6 +105,8 @@ export default class PiktidApiClient {
           data: "Unexpected error",
         }
       }
+
+      throw error
     }
 
     return {
@@ -238,7 +241,7 @@ export default class PiktidApiClient {
 
       return response.data as Resp
     } catch (error) {
-      console.error("Error uploading file:", error)
+      console.error("Error uploading file")
       throw error
     }
   }
@@ -247,20 +250,28 @@ export default class PiktidApiClient {
     const formData = new FormData()
     formData.append("face", file)
 
-    return await this.uploadFile<UploadFaceResponse>("/swap/face", formData, options)
+    return await this.uploadFile<UploadFaceResponse>("/images/face", formData, options)
   }
 
   async swapUploadTarget(file: File, options?: Partial<RequestFileOptions>) {
     const formData = new FormData()
     formData.append("target", file)
 
-    return await this.uploadFile<UploadTargetResponse>("/swap/target", formData, options)
+    return await this.uploadFile<UploadTargetResponse>("/images/target", formData, options)
   }
 
   async swapGenerate(faceUrl: string, targetUrl: string) {
-    return (await this.post("/swap/generate", {
+    return (await this.put("/jobs/generate", {
       face_name: faceUrl,
       target_name: targetUrl,
-    })) as SwapGenerateResponse
+    })) as Response & {
+      body: JobCreationResponse
+    }
+  }
+
+  async getJob(jobId: string) {
+    return (await this.get("/jobs/" + jobId)) as Response & {
+      body: JobStatusResponse
+    }
   }
 }

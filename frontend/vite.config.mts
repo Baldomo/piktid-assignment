@@ -11,13 +11,18 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api/": {
-        target: "https://api.piktid.com",
+      "/api/jobs": {
+        target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,
       },
-      "/jobs": {
+      "/api/images": {
         target: "http://localhost:5000",
+        changeOrigin: true,
+        secure: false,
+      },
+      "/api/": {
+        target: "https://api.piktid.com",
         changeOrigin: true,
         secure: false,
       },
