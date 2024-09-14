@@ -7,6 +7,7 @@ import { toast } from "sonner"
 
 export function FaceSwapProvider({ children }: { children: ReactNode }) {
   const api = useApi()
+  const [seed, setSeed] = useState<number>()
   const [jobId, setJobId] = useState<string>()
   const [swapProcessing, setSwapProcessing] = useState(false)
   const [faceUrl, setFaceUrl] = useState<string>()
@@ -16,13 +17,12 @@ export function FaceSwapProvider({ children }: { children: ReactNode }) {
   useInterval(
     useCallback(() => {
       if (!jobId) {
-        console.log("returning")
         return
       }
+
       api
         .getJob(jobId)
         .then(resp => {
-          console.log("Poll", resp)
           if (resp.body.status === "done") {
             setSwapProcessing(false)
             setLinks(resp.body.result.links)
@@ -44,11 +44,11 @@ export function FaceSwapProvider({ children }: { children: ReactNode }) {
     }
 
     api
-      .swapGenerate(faceUrl, targetUrl)
+      .swapGenerate(faceUrl, targetUrl, seed)
       .then(resp => {
-        console.log("Job resp", resp)
         setJobId(resp.body.job_id)
         setSwapProcessing(true)
+        toast("Started job")
       })
       .catch(() => {
         toast.error("Image generation failed", { description: "Failed to create job" })
@@ -65,6 +65,8 @@ export function FaceSwapProvider({ children }: { children: ReactNode }) {
         links,
         doSwap,
         swapProcessing,
+        seed,
+        setSeed,
       }}
     >
       {children}

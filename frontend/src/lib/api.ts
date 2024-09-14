@@ -260,10 +260,19 @@ export default class PiktidApiClient {
     return await this.uploadFile<UploadTargetResponse>("/images/target", formData, options)
   }
 
-  async swapGenerate(faceUrl: string, targetUrl: string) {
+  async swapGenerate(faceUrl: string, targetUrl: string, seed?: number) {
+    const options = seed
+      ? {
+          options: {
+            seed,
+          },
+        }
+      : {}
+
     return (await this.put("/jobs/generate", {
       face_name: faceUrl,
       target_name: targetUrl,
+      ...options,
     })) as Response & {
       body: JobCreationResponse
     }

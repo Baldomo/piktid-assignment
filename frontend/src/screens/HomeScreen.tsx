@@ -48,7 +48,7 @@ export function HomeScreen() {
   }, [beforeUnload, faceUrl, links.length, swapProcessing, targetUrl])
 
   return (
-    <ArcherContainer strokeColor="#9ca3af" noCurves>
+    <ArcherContainer strokeColor="#d1d5db" noCurves>
       <div className="h-full gap-6 flex flex-col sm:grid sm:grid-rows-1 sm:grid-cols-5 place-items-center">
         <div className="col-span-3 p-4 sm:p-6 w-full grid gap-4 grid-rows-5 grid-cols-4 sm:grid-cols-5 align-self-center">
           <ArcherElement

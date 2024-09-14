@@ -1,3 +1,4 @@
+import json
 import logging
 from os import environ
 from pathlib import Path
@@ -78,7 +79,9 @@ def upload_target_image():
     return jsonify({"target_name": token}), 201
 
 
-def upload_images_to_api(face_token: str, target_token: str, headers: dict):
+def upload_images_to_api(
+    face_token: str, target_token: str, options: dict | None, headers: dict
+):
     face_image_path = UPLOAD_FOLDER / face_token
     target_image_path = UPLOAD_FOLDER / target_token
 
@@ -89,7 +92,16 @@ def upload_images_to_api(face_token: str, target_token: str, headers: dict):
 
     try:
         return requests.post(
-            f"{BASE_API_URL}/api/swap/all", files=files, headers=headers
+            f"{BASE_API_URL}/api/swap/all",
+            files=files,
+            headers=headers,
+            data=(
+                {
+                    "options": json.dumps(options),
+                }
+                if options
+                else None
+            ),
         )
     except Exception as e:
         logging.error(f"Error uploading images: {e}")
@@ -106,8 +118,9 @@ def call_backend_api(job_id, job_data, auth_header):
         headers = {"Authorization": auth_header}
         face_token = job_data["face_name"]
         target_token = job_data["target_name"]
+        options = job_data.get("options")
 
-        response = upload_images_to_api(face_token, target_token, headers)
+        response = upload_images_to_api(face_token, target_token, options, headers)
 
         jobs[job_id].result = response.json()
         logging.info(response.json())

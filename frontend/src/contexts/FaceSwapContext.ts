@@ -9,6 +9,8 @@ export type FaceSwapContextType = {
   links: SwapGenerateLink[]
   doSwap: () => void
   swapProcessing: boolean
+  seed: number | undefined
+  setSeed: (seed: number | undefined) => void
 }
 
 export const FaceSwapContext = createContext<FaceSwapContextType | null>(null)
