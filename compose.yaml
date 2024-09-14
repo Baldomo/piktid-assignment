@@ -4,7 +4,7 @@ services:
   swap-frontend:
     image: swap-frontend
     container_name: braid-frontend
-    build: .
+    build: frontend
     restart: always
     mem_limit: ${MEMORY_FRONTEND:-512m}
     ports:
