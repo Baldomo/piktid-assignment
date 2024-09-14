@@ -13,9 +13,17 @@ docker compose up
 open http://localhost
 ```
 
-#### (2) `npm`
+#### (2) Local run
 Does the whole code hot reload thing, even when configuration or `package.json` are changed. Environment variables are automatically loaded from the `.env` file.
 ```sh
+cd frontend
 npm ci
 npm start -- --open
+```
+
+In another terminal:
+```sh
+cd queue-manager
+poetry install
+poetry run python main.py
 ```
